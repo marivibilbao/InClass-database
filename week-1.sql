@@ -141,13 +141,6 @@ SELECT * FROM bookings WHERE checkin_date > '2019/10/01' AND nights >= 2;
 (0 filas)
 
 
-SELECT * FROM bookings WHERE checkin_date > '2019/10/01' AND nights >= 2;
---Da como resultado lo siguiente:
- id | customer_id | hotel_id | checkin_date | nights
-----+-------------+----------+--------------+--------
-(0 filas)
-
-
 SELECT * FROM hotels WHERE postcode = 'CM194JS' OR postcode = 'TR209AX';
 --Da como resultado lo siguiente:
  id |        name        | rooms | postcode
@@ -159,5 +152,95 @@ SELECT * FROM hotels WHERE postcode = 'CM194JS' OR postcode = 'TR209AX';
 
 
 -- Exercise 5
+-- Descargamos el archivo y nos vamos a la ruta donde se encuentra y ejecutamos el comando:
+psql -U postgres -d cyf_hotels -f cyf_hotels_exercise5.sql
+
+SELECT * FROM customers WHERE name = Laurence;
+                                              ^
+cyf_hotels=# SELECT * FROM customers WHERE name = 'Laurence Lebihan';
+ id |       name       |           email           |       address        |   city    | postcode | country
+----+------------------+---------------------------+----------------------+-----------+----------+---------
+  9 | Laurence Lebihan | laurence.lebihan@xmzx.net | 12, rue des Bouchers | Marseille | 13008    | France
+(1 fila)
+
+
+SELECT * FROM customers WHERE country = 'UK';
+ id |       name       |           email            |     address      |    city    | postcode | country
+----+------------------+----------------------------+------------------+------------+----------+---------
+  1 | John Smith       | j.smith@johnsmith.org      | 11 New Road      | Liverpool  | L10 2AB  | UK
+  2 | Sue Jones        | s.jones1234@gmail.com      | 120 Old Street   | London     | N10 3CD  | UK
+  3 | Alice Evans      | alice.evans001@hotmail.com | 3 High Road      | Manchester | m13 4ef  | UK
+  4 | Mohammed Trungpa | mo.trungpa@hotmail.com     | 25 Blue Road     | Manchester | M25 6GH  | UK
+  5 | Steven King      | steve.king123@hotmail.com  | 19 Bed Street    | Newtown    | xy2 3ac  | UK
+  6 | Nadia Sethuraman | nadia.sethuraman@mail.com  | 135 Green Street | Manchester | M10 4BG  | UK
+  7 | Melinda Marsh    | mel.marsh-123@gmail.com    | 7 Preston Road   | Oldham     | OL3 5XZ  | UK
+ 10 | Keith Stewart    | keith.stewart@gmail.com    | 84 Town Lane     | Tadworth   | td5 7ng  | UK
+(8 filas)
+
+
+SELECT address, city, postcode FROM customers WHERE name = 'Melinda Marsh';
+    address     |  city  | postcode
+----------------+--------+----------
+ 7 Preston Road | Oldham | OL3 5XZ
+(1 fila)
+
+
+SELECT * FROM hotels WHERE postcode = 'DGQ127';
+ id |           name           | rooms | postcode
+----+--------------------------+-------+----------
+  4 | Azure Crown Resort & Spa |    18 | DGQ127
+  5 | Jade Peaks Hotel         |     4 | DGQ127
+  6 | Elegant Resort           |    14 | DGQ127
+(3 filas)
+
+
+SELECT * FROM hotels WHERE rooms > 11;
+ id |           name           | rooms | postcode
+----+--------------------------+-------+----------
+  4 | Azure Crown Resort & Spa |    18 | DGQ127
+  6 | Elegant Resort           |    14 | DGQ127
+  7 | Cozy Hotel               |    20 | AYD189
+  8 | Snowy Echo Motel         |    15 | AYD189
+(4 filas)
+
+
+SELECT * FROM hotels WHERE rooms > 6 AND rooms < 15;
+ id |          name           | rooms | postcode
+----+-------------------------+-------+----------
+  1 | Golden Cavern Resort    |    10 | L10ABC
+  3 | Pleasant Mountain Hotel |     7 | ABCDE1
+  6 | Elegant Resort          |    14 | DGQ127
+(3 filas)
+
+
+SELECT * FROM hotels WHERE rooms = 10  or rooms = 20;
+ id |         name         | rooms | postcode
+----+----------------------+-------+----------
+  1 | Golden Cavern Resort |    10 | L10ABC
+  7 | Cozy Hotel           |    20 | AYD189
+(2 filas)
+
+
+SELECT * FROM bookings WHERE id = 1;
+ id | customer_id | hotel_id | checkin_date | nights
+----+-------------+----------+--------------+--------
+  1 |           1 |        1 | 2019-10-01   |      2
+(1 fila)
+
+
+SELECT * FROM bookings WHERE nights > 4 ;
+ id | customer_id | hotel_id | checkin_date | nights
+----+-------------+----------+--------------+--------
+  2 |           1 |        1 | 2019-12-10   |      6
+  9 |           4 |        2 | 2019-09-16   |      5
+ 11 |           6 |        6 | 2020-01-14   |      5
+ 13 |           8 |        5 | 2020-01-03   |      7
+(4 filas)
+
+
+
+
+
+
 
 
