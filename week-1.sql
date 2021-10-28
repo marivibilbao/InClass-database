@@ -107,6 +107,17 @@ SELECT * FROM hotels WHERE rooms > 7;
 ERROR:  el operador no existe: character varying > integer
 LÍNEA 1: SELECT * FROM hotels WHERE rooms > 7;
 
+---- El error aparecia porque hice mal la creación del valor de rooms y realice el siguiente paso:
+ALTER TABLE hotels ALTER COLUMN rooms TYPE integer USING (trim(rooms)::integer);
+---- Vuelvo a ejecutar y me aparece:
+cyf_hotels=# SELECT * FROM hotels WHERE rooms > 7;
+ id |        name         | rooms | postcode
+----+---------------------+-------+----------
+  1 | Triple Point Hotel  |    10 | CM194JS
+  2 | Triple Point Hotel  |    10 | CM194JS
+  4 | Pacific Petal Motel |    15 | BN180TG
+(3 filas)
+
 
 SELECT name,address FROM customers WHERE id = 1;
 --Da como resultado lo siguiente:
@@ -148,3 +159,5 @@ SELECT * FROM hotels WHERE postcode = 'CM194JS' OR postcode = 'TR209AX';
 
 
 -- Exercise 5
+
+
