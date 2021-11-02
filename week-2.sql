@@ -423,6 +423,82 @@ INNER JOIN hotels ON hotels.id=bookings.hotel_id WHERE bookings.nights > 5;
 (0 filas)
 
 
+-- Returning all customers whose ID is 1, 2, 3 or 4:
+SELECT * FROM customers WHERE id IN (1,2,3,4);
+ id |       name       |           email            |    address     |    city    | postcode | country
+----+------------------+----------------------------+----------------+------------+----------+---------
+  1 | John Smith       | j.smith@johnsmith.org      | 11 New Road    | Liverpool  | L10 2AB  | UK
+  2 | Sue Jones        | s.jones1234@gmail.com      | 120 Old Street | London     | N10 3CD  | UK
+  3 | Alice Evans      | alice.evans001@hotmail.com | 3 High Road    | Manchester | m13 4ef  | UK
+  4 | Mohammed Trungpa | mo.trungpa@hotmail.com     | 25 Blue Road   | Manchester | M25 6GH  | UK
+(4 filas)
+
+
+-- Query by pattern matching, for example retrieve all customers whose name starts with Bob:
+SELECT * FROM customers WHERE name LIKE 'Bob%';
+ id | name | email | address | city | postcode | country
+----+------+-------+---------+------+----------+---------
+(0 filas)
+
+
+-- If you want to retrieve all the booking start dates with the customer names and hotel names for customer names starting with the letter M ordered by hotel name with a limit of 3 results:
+SELECT bookings.checkin_date,customers.name,hotels.name FROM bookings
+INNER JOIN customers ON customers.id=bookings.customer_id
+INNER JOIN hotels ON hotels.id=bookings.hotel_id
+WHERE customers.name LIKE 'M%'
+ORDER BY hotels.name
+LIMIT 3;
+ checkin_date |       name       |           name
+--------------+------------------+--------------------------
+ 2020-02-01   | Mart├¡n Sommer   | Azure Crown Resort & Spa
+ 2019-09-16   | Mohammed Trungpa | Elder Lake Hotel
+ 2019-12-23   | Mohammed Trungpa | Snowy Echo Motel
+(3 filas)
+
+
+-- Exercise 6:
+----- * 6.1.- Retrieve all customers whose name starts with the letter S.
+SELECT * FROM customers WHERE name LIKE 'S%';
+ id |    name     |           email           |    address     |  city   | postcode | country
+----+-------------+---------------------------+----------------+---------+----------+---------
+  2 | Sue Jones   | s.jones1234@gmail.com     | 120 Old Street | London  | N10 3CD  | UK
+  5 | Steven King | steve.king123@hotmail.com | 19 Bed Street  | Newtown | xy2 3ac  | UK
+(2 filas)
+
+
+----- * 6.2.- Retrieve all hotels which have the word Hotel in their name.
+SELECT * FROM hotels WHERE name LIKE '%Hotel';
+ id |          name           | rooms | postcode
+----+-------------------------+-------+----------
+  3 | Pleasant Mountain Hotel |     7 | ABCDE1
+  5 | Jade Peaks Hotel        |     4 | DGQ127
+  2 | Elder Lake Hotel        |     5 | L10XYZ
+  7 | Cozy Hotel              |    25 | AYD189
+(4 filas)
+
+
+----- * 6.3.- Retrieve the booking start date, customer name, hotel name for the top 5 bookings ordered by number of nights in descending order.
+SELECT bookings.checkin_date,customers.name,hotels.name FROM bookings
+INNER JOIN customers ON customers.id=bookings.customer_id
+INNER JOIN hotels ON hotels.id=bookings.hotel_id
+ORDER BY bookings.nights DESC LIMIT 5;
+checkin_date |       name       |          name
+--------------+------------------+-------------------------
+ 2019-12-10   | John Smith       | Golden Cavern Resort
+ 2019-09-16   | Mohammed Trungpa | Elder Lake Hotel
+ 2019-10-01   | John Smith       | Golden Cavern Resort
+ 2019-07-20   | John Smith       | Pleasant Mountain Hotel
+ 2020-03-10   | Sue Jones        | Pleasant Mountain Hotel
+(5 filas)
+
+
+
+
+
+
+
+
+
 
 
 
