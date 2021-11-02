@@ -67,7 +67,7 @@ ALTER TABLE clients RENAME TO customers;
 
 
 -- Exercise 1: 
------ * Add a column date_of_birth of type DATE in the customers table.
+----- * 1.1.- Add a column date_of_birth of type DATE in the customers table.
 cyf_hotels=# ALTER TABLE customers ADD COLUMN date_of_birth DATE;
 
 -- Verificamos:
@@ -90,7 +90,7 @@ Referenciada por:
 
 
 -- RENOMBRAR COLUMNA DE UNA TABLA:
------ * Rename the column date_of_birth to birthdate in the customers table.
+----- * 1.2.- Rename the column date_of_birth to birthdate in the customers table.
 ALTER TABLE customers RENAME COLUMN date_of_birth TO birthdate;
 
 -- Verificamos:
@@ -112,7 +112,7 @@ Referenciada por:
     TABLE "bookings" CONSTRAINT "bookings_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customers(id)
 
 
------ * Delete the column birthdate from the customers table
+----- * 1.3.- Delete the column birthdate from the customers table
 ALTER TABLE customers DROP COLUMN birthdate;
 
 -- Verificamos:
@@ -132,7 +132,34 @@ ALTER TABLE customers DROP COLUMN birthdate;
 Referenciada por:
     TABLE "bookings" CONSTRAINT "bookings_customer_id_fkey" FOREIGN KEY (customer_id) REFERENCES customers(id)
 
+-- Exercise 2:
+----- * 2.1.- Create a new table test
+CREATE TABLE test (
+cyf_hotels(# );
 
+-- Verificamos si se creó la tabla test:
+\dt
+         Listado de relaciones
+ Esquema |  Nombre   | Tipo  |  Due±o
+---------+-----------+-------+----------
+ public  | bookings  | tabla | postgres
+ public  | customers | tabla | postgres
+ public  | hotels    | tabla | postgres
+ public  | test      | tabla | postgres
+(4 filas)
+
+----- * 2.2.- Drop the table test
+DROP TABLE test;
+
+-- Verificamos:
+\dt
+         Listado de relaciones
+ Esquema |  Nombre   | Tipo  |  Due±o
+---------+-----------+-------+----------
+ public  | bookings  | tabla | postgres
+ public  | customers | tabla | postgres
+ public  | hotels    | tabla | postgres
+(3 filas)
 
 
 
