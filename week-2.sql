@@ -356,6 +356,75 @@ SELECT * FROM customers;
  10 | Keith Stewart    | keith.stewart@gmail.com    | 84 Town Lane         | Tadworth   | td5 7ng  | UK
 (9 filas)
 
+-- JOIN:
+SELECT A.column1, B.column2 FROM A INNER JOIN B ON A.b_id=B.id;
+
+-- Para cargar todas las reservas junto con los datos del cliente y los datos del hotel:
+SELECT * FROM bookings
+cyf_hotels-# INNER JOIN customers ON customers.id=bookings.customer_id
+cyf_hotels-# INNER JOIN hotels ON hotels.id=bookings.hotel_id;
+ id | customer_id | hotel_id | checkin_date | nights | id |       name       |           email            |    address     |    city    | postcode | country | id |           name           | rooms | postcode
+----+-------------+----------+--------------+--------+----+------------------+----------------------------+----------------+------------+----------+---------+----+--------------------------+-------+----------
+  3 |           1 |        3 | 2019-07-20   |      4 |  1 | John Smith       | j.smith@johnsmith.org      | 11 New Road    | Liverpool  | L10 2AB  | UK      |  3 | Pleasant Mountain Hotel  |     7 | ABCDE1
+  4 |           2 |        3 | 2020-03-10   |      4 |  2 | Sue Jones        | s.jones1234@gmail.com      | 120 Old Street | London     | N10 3CD  | UK      |  3 | Pleasant Mountain Hotel  |     7 | ABCDE1
+  5 |           2 |        5 | 2020-04-01   |      1 |  2 | Sue Jones        | s.jones1234@gmail.com      | 120 Old Street | London     | N10 3CD  | UK      |  5 | Jade Peaks Hotel         |     4 | DGQ127
+  6 |           3 |        1 | 2019-11-01   |      1 |  3 | Alice Evans      | alice.evans001@hotmail.com | 3 High Road    | Manchester | m13 4ef  | UK      |  1 | Golden Cavern Resort     |    10 | L10ABC
+  7 |           3 |        2 | 2019-11-23   |      2 |  3 | Alice Evans      | alice.evans001@hotmail.com | 3 High Road    | Manchester | m13 4ef  | UK      |  2 | Elder Lake Hotel         |     5 | L10XYZ
+  8 |           4 |        8 | 2019-12-23   |      3 |  4 | Mohammed Trungpa | mo.trungpa@hotmail.com     | 25 Blue Road   | Manchester | M25 6GH  | UK      |  8 | Snowy Echo Motel         |    15 | AYD189
+  9 |           4 |        2 | 2019-09-16   |      5 |  4 | Mohammed Trungpa | mo.trungpa@hotmail.com     | 25 Blue Road   | Manchester | M25 6GH  | UK      |  2 | Elder Lake Hotel         |     5 | L10XYZ
+ 12 |           8 |        4 | 2020-02-01   |      3 |  8 | Mart├¡n Sommer   | martin.sommer@dfgg.net     | C/ Romero, 33  | Madrid     | 28016    | Spain   |  4 | Azure Crown Resort & Spa |    18 | DGQ127
+ 14 |           8 |        8 | 2019-12-25   |      4 |  8 | Mart├¡n Sommer   | martin.sommer@dfgg.net     | C/ Romero, 33  | Madrid     | 28016    | Spain   |  8 | Snowy Echo Motel         |    15 | AYD189
+  1 |           1 |        1 | 2019-10-01   |      5 |  1 | John Smith       | j.smith@johnsmith.org      | 11 New Road    | Liverpool  | L10 2AB  | UK      |  1 | Golden Cavern Resort     |    10 | L10ABC
+  2 |           1 |        1 | 2019-12-10   |      5 |  1 | John Smith       | j.smith@johnsmith.org      | 11 New Road    | Liverpool  | L10 2AB  | UK      |  1 | Golden Cavern Resort     |    10 | L10ABC
+(11 filas)
+-- Más  --
+
+-- Para cargar las fechas de registro de la reserva para el ID de cliente 1 junto con el nombre del cliente y el nombre del hotel:
+SELECT bookings.checkin_date,customers.name,hotels.name FROM bookings
+cyf_hotels-# INNER JOIN customers ON customers.id=bookings.customer_id
+cyf_hotels-# INNER JOIN hotels ON hotels.id=bookings.hotel_id
+cyf_hotels-# WHERE customers.id=1;
+ checkin_date |    name    |          name
+--------------+------------+-------------------------
+ 2019-12-10   | John Smith | Golden Cavern Resort
+ 2019-10-01   | John Smith | Golden Cavern Resort
+ 2019-07-20   | John Smith | Pleasant Mountain Hotel
+(3 filas)
+
+
+-- Exercise 5:
+----- * 5.1.- Try and understand each of the queries above in your psql prompt
+----- * 5.2.- Retrieve all the bookings along with customer data for bookings starting in 2020
+SELECT * FROM customers 
+INNER JOIN bookings ON customers.id=bookings.customer_id WHERE bookings.checkin_date > '2020-01-01';
+ id |      name      |         email          |    address     |  city  | postcode | country | id | customer_id | hotel_id | checkin_date | nights
+----+----------------+------------------------+----------------+--------+----------+---------+----+-------------+----------+--------------+--------
+  2 | Sue Jones      | s.jones1234@gmail.com  | 120 Old Street | London | N10 3CD  | UK      |  4 |           2 |        3 | 2020-03-10   |      4
+  2 | Sue Jones      | s.jones1234@gmail.com  | 120 Old Street | London | N10 3CD  | UK      |  5 |           2 |        5 | 2020-04-01   |      1
+  8 | Mart├¡n Sommer | martin.sommer@dfgg.net | C/ Romero, 33  | Madrid | 28016    | Spain   | 12 |           8 |        4 | 2020-02-01   |      3
+(3 filas)
+
+
+----- * 5.3.- Retrieve the customer names, booking start dates and number of nights for all customers who booked the hotel name Jade Peaks Hotel 
+SELECT * FROM bookings 
+INNER JOIN customers ON customers.id=bookings.customer_id INNER JOIN hotels ON hotels.id=bookings.hotel_id WHERE hotels.id=5;
+ id | customer_id | hotel_id | checkin_date | nights | id |   name    |         email         |    address     |  city  | postcode | country | id |       name       | rooms | postcode
+----+-------------+----------+--------------+--------+----+-----------+-----------------------+----------------+--------+----------+---------+----+------------------+-------+----------
+  5 |           2 |        5 | 2020-04-01   |      1 |  2 | Sue Jones | s.jones1234@gmail.com | 120 Old Street | London | N10 3CD  | UK      |  5 | Jade Peaks Hotel |     4 | DGQ127
+(1 fila)
+
+
+----- * 5.4.- Retrieve all the booking start dates with customer names and hotel names for all bookings for more than 5 nights
+SELECT * FROM bookings 
+INNER JOIN customers ON customers.id=bookings.customer_id 
+INNER JOIN hotels ON hotels.id=bookings.hotel_id WHERE bookings.nights > 5;
+ id | customer_id | hotel_id | checkin_date | nights | id | name | email | address | city | postcode | country | id | name | rooms | postcode
+----+-------------+----------+--------------+--------+----+------+-------+---------+------+----------+---------+----+------+-------+----------
+(0 filas)
+
+
+
+
 
 
 
