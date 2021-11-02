@@ -1,6 +1,5 @@
 -- AÑADIR COLUMNAS
 ALTER TABLE customers ADD COLUMN date_of_birth DATE;
-
 -- Verificamos si se añadio la nueva columna:
 \d customers
                                          Tabla ½public.customers╗
@@ -22,7 +21,6 @@ Referenciada por:
 
 -- ELIMINAR COLUMNAS
 ALTER TABLE customers DROP COLUMN date_of_birth;
-
 -- Verificamos:
 \d customers
                                       Tabla ½public.customers╗
@@ -43,7 +41,6 @@ Referenciada por:
 
 -- RENOMBRAR tabla:
 ALTER TABLE customers RENAME TO clients;
-
 -- Verificamos:
 cyf_hotels=# \d clients;
                                        Tabla ½public.clients╗
@@ -284,12 +281,80 @@ SELECT * FROM bookings;
 (14 filas)
 
 
+-- Exercise 4:
+----- * 4.1.- Delete the booking of customer ID 8 for the date 2020-01-03
+DELETE FROM bookings WHERE customer_id = 8 AND checkin_date = '2020-01-03';
+-- Verificamos:
+SELECT * FROM bookings;
+ id | customer_id | hotel_id | checkin_date | nights
+----+-------------+----------+--------------+--------
+  3 |           1 |        3 | 2019-07-20   |      4
+  4 |           2 |        3 | 2020-03-10   |      4
+  5 |           2 |        5 | 2020-04-01   |      1
+  6 |           3 |        1 | 2019-11-01   |      1
+  7 |           3 |        2 | 2019-11-23   |      2
+  8 |           4 |        8 | 2019-12-23   |      3
+  9 |           4 |        2 | 2019-09-16   |      5
+ 10 |           6 |        5 | 2019-09-14   |      2
+ 11 |           6 |        6 | 2020-01-14   |      5
+ 12 |           8 |        4 | 2020-02-01   |      3
+ 14 |           8 |        8 | 2019-12-25   |      4
+  1 |           1 |        1 | 2019-10-01   |      5
+  2 |           1 |        1 | 2019-12-10   |      5
+(13 filas)
 
 
+----- * 4.2.- Delete all the bookings of customer ID 6
+DELETE FROM bookings WHERE customer_id = 6;
+-- Verificamos:
+ SELECT * FROM bookings;
+ id | customer_id | hotel_id | checkin_date | nights
+----+-------------+----------+--------------+--------
+  3 |           1 |        3 | 2019-07-20   |      4
+  4 |           2 |        3 | 2020-03-10   |      4
+  5 |           2 |        5 | 2020-04-01   |      1
+  6 |           3 |        1 | 2019-11-01   |      1
+  7 |           3 |        2 | 2019-11-23   |      2
+  8 |           4 |        8 | 2019-12-23   |      3
+  9 |           4 |        2 | 2019-09-16   |      5
+ 12 |           8 |        4 | 2020-02-01   |      3
+ 14 |           8 |        8 | 2019-12-25   |      4
+  1 |           1 |        1 | 2019-10-01   |      5
+  2 |           1 |        1 | 2019-12-10   |      5
+(11 filas)
 
 
+----- * 4.3.- Delete the customer with ID 6
+SELECT * FROM customers;
+ id |       name       |           email            |       address        |    city    | postcode | country
+----+------------------+----------------------------+----------------------+------------+----------+---------
+  1 | John Smith       | j.smith@johnsmith.org      | 11 New Road          | Liverpool  | L10 2AB  | UK
+  2 | Sue Jones        | s.jones1234@gmail.com      | 120 Old Street       | London     | N10 3CD  | UK
+  3 | Alice Evans      | alice.evans001@hotmail.com | 3 High Road          | Manchester | m13 4ef  | UK
+  4 | Mohammed Trungpa | mo.trungpa@hotmail.com     | 25 Blue Road         | Manchester | M25 6GH  | UK
+  5 | Steven King      | steve.king123@hotmail.com  | 19 Bed Street        | Newtown    | xy2 3ac  | UK
+  7 | Melinda Marsh    | mel.marsh-123@gmail.com    | 7 Preston Road       | Oldham     | OL3 5XZ  | UK
+  8 | Mart├¡n Sommer   | martin.sommer@dfgg.net     | C/ Romero, 33        | Madrid     | 28016    | Spain
+  9 | Laurence Lebihan | laurence.lebihan@xmzx.net  | 12, rue des Bouchers | Marseille  | 13008    | France
+ 10 | Keith Stewart    | keith.stewart@gmail.com    | 84 Town Lane         | Tadworth   | td5 7ng  | UK
+  6 | Nadia Sethuraman | nadia.sethuraman@mail.com  | 2 Blue Street        | Glasgow    | G11ABC   | UK
+(10 filas)
 
-
+DELETE FROM customers WHERE id = 6;
+-- Verificamos:
+SELECT * FROM customers;
+ id |       name       |           email            |       address        |    city    | postcode | country
+----+------------------+----------------------------+----------------------+------------+----------+---------
+  1 | John Smith       | j.smith@johnsmith.org      | 11 New Road          | Liverpool  | L10 2AB  | UK
+  2 | Sue Jones        | s.jones1234@gmail.com      | 120 Old Street       | London     | N10 3CD  | UK
+  3 | Alice Evans      | alice.evans001@hotmail.com | 3 High Road          | Manchester | m13 4ef  | UK
+  4 | Mohammed Trungpa | mo.trungpa@hotmail.com     | 25 Blue Road         | Manchester | M25 6GH  | UK
+  5 | Steven King      | steve.king123@hotmail.com  | 19 Bed Street        | Newtown    | xy2 3ac  | UK
+  7 | Melinda Marsh    | mel.marsh-123@gmail.com    | 7 Preston Road       | Oldham     | OL3 5XZ  | UK
+  8 | Mart├¡n Sommer   | martin.sommer@dfgg.net     | C/ Romero, 33        | Madrid     | 28016    | Spain
+  9 | Laurence Lebihan | laurence.lebihan@xmzx.net  | 12, rue des Bouchers | Marseille  | 13008    | France
+ 10 | Keith Stewart    | keith.stewart@gmail.com    | 84 Town Lane         | Tadworth   | td5 7ng  | UK
+(9 filas)
 
 
 
