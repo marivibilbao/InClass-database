@@ -75,6 +75,23 @@ app.post("/hotels", function (req, res) {
 });
 
 -- Exercise 1:
+-- Utilizando postman y archivo server.js agrego metodo POST/hotels y POST/Customers
+http://localhost:3000/hotels
+{
+    "name": "Caracas Hotel",
+    "rooms": 4,
+    "postcode": "08094"
+}
+
+http://localhost:3000/customers
+{
+    "name": "Maria Victoria Bilbao",
+    "email": "marivibilbao@gmail.com",
+    "address": "Carrer dels Enamorats",
+    "city": "Barcelona",
+    "postcode": "08013",
+    "country": "España"
+}
 
 
 

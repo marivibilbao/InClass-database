@@ -4,10 +4,6 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-app.listen(3000, function () {
-  console.log("Server is listening on port 3000. Ready to accept requests!");
-});
-
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -55,3 +51,33 @@ app.post("/hotels", function (req, res) {
       }
     });
 });
+
+
+app.get("/customers", function (req, res) {
+    pool
+      .query("SELECT * FROM customers")
+      .then((result) => res.json(result.rows))
+      .catch((e) => console.error(e));
+});
+
+app.post("/customers", function (req, res) {
+    const newCustomerName = req.body.name;
+    const newCustomerEmail = req.body.email;
+    const newCustomerAddress = req.body.address;
+    const newCustomerCity = req.body.city;
+    const newCustomerPostcode = req.body.postcode;
+    const newCustomerCountry = req.body.country;
+  
+    const query =
+    "INSERT INTO customers (name, email, address, city, postcode, country) VALUES ($1, $2, $3, $4, $5, $6)";
+  
+    pool
+      .query(query, [newCustomerName, newCustomerEmail, newCustomerAddress, newCustomerCity, newCustomerPostcode, newCustomerCountry])
+      .then(() => res.send("Customer created!"))
+      .catch((e) => console.error(e));
+});
+
+app.listen(3000, function () {
+    console.log("Server is listening on port 3000. Ready to accept requests!");
+});
+
