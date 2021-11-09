@@ -75,7 +75,8 @@ app.post("/hotels", function (req, res) {
 });
 
 -- Exercise 1:
--- Utilizando postman y archivo server.js agrego metodo POST/hotels y POST/Customers
+-- Utilizando postman y archivo server.js agrego metodo POST/hotels y POST/Customers, 
+-- los resultados se encuentran en la carpeta de imágenes.
 http://localhost:3000/hotels
 {
     "name": "Caracas Hotel",
@@ -93,5 +94,7 @@ http://localhost:3000/customers
     "country": "España"
 }
 
+-- Exercise 2:
+-- En el archivo server.js se añade código para realizar la búsqueda por ID y se adjunta imagen
 
 

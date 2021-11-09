@@ -17,13 +17,14 @@ const pool = new Pool({
 // En donde dice password si se coloca, te carga correctamente los datos
 
 // GET - Hotels
-app.get("/hotels", function (req, res) {
-  pool
-    .query("SELECT * FROM hotels")
-    .then((result) => res.json(result.rows))
-    .catch((e) => console.error(e));
-});
+// app.get("/hotels", function (req, res) {
+//   pool
+//     .query("SELECT * FROM hotels")
+//     .then((result) => res.json(result.rows))
+//     .catch((e) => console.error(e));
+// });
 
+// Exercise 1:
 //POST - Hotels
 app.post("/hotels", function (req, res) {
   const newHotelName = req.body.name;
@@ -55,12 +56,12 @@ app.post("/hotels", function (req, res) {
 });
 
 // GET - Customers
-app.get("/customers", function (req, res) {
-    pool
-      .query("SELECT * FROM customers")
-      .then((result) => res.json(result.rows))
-      .catch((e) => console.error(e));
-});
+// app.get("/customers", function (req, res) {
+//     pool
+//       .query("SELECT * FROM customers")
+//       .then((result) => res.json(result.rows))
+//       .catch((e) => console.error(e));
+// });
 
 // POST - Customers
 // app.post("/customers", function (req, res) {
@@ -105,6 +106,56 @@ pool
       }
     });
 });
+
+// GET - Hotels --->> Ordenados por orden
+// app.get("/hotels", function (req, res) {
+//     pool
+//       .query("SELECT * FROM hotels ORDER BY name")
+//       .then((result) => res.json(result.rows))
+//       .catch((e) => console.error(e));
+// });
+
+// GET - Hotels ---->> Filtrar el hotel con una palabra clave
+app.get("/hotels", function (req, res) {
+    const hotelNameQuery = req.query.name;
+    let query = `SELECT * FROM hotels ORDER BY name`;
+  
+    if (hotelNameQuery) {
+      query = `SELECT * FROM hotels WHERE name LIKE '%${hotelNameQuery}%' ORDER BY name`;
+    }
+  
+    pool
+      .query(query)
+      .then((result) => res.json(result.rows))
+      .catch((e) => console.error(e));
+});
+
+// Exercise 2:
+// GET - Hotels ---->> Filtrar sólo por un ID específico
+app.get("/hotels/:hotelId", function (req, res) {
+    const hotelId = req.params.hotelId;
+  
+    pool
+      .query("SELECT * FROM hotels WHERE id=$1", [hotelId])
+      .then((result) => res.json(result.rows))
+      .catch((e) => console.error(e));
+});
+
+// GET - Customers ---->> Ordenados por nombre
+app.get("/customers", function (req, res) {
+    const customerNameQuery = req.query.name;
+    let query = `SELECT * FROM customers ORDER BY name`;
+  
+    if (customerNameQuery) {
+      query = `SELECT * FROM customers WHERE name LIKE '%${customerNameQuery}%' ORDER BY name`;
+    }
+  
+    pool
+      .query(query)
+      .then((result) => res.json(result.rows))
+      .catch((e) => console.error(e));
+});
+
 
 
 app.listen(3000, function () {
