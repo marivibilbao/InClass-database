@@ -1,13 +1,15 @@
+-- Ejecutamos en la consola lo siguiente:
+mkdir cyf-hotels-api && cd cyf-hotels-api && npm init
+
+npm install express
+npm install pg
+
+-- Se crea archivo:
+server.js
+
+-- Dentro del archivo server.js se coloca lo siguiente:
 const express = require("express");
 const app = express();
-
-const bodyParser = require("body-parser");
-app.use(bodyParser.json());
-
-app.listen(3000, function () {
-  console.log("Server is listening on port 3000. Ready to accept requests!");
-});
-
 const { Pool } = require("pg");
 
 const pool = new Pool({
@@ -18,8 +20,6 @@ const pool = new Pool({
   port: 5432,
 });
 
-// En donde dice password si se coloca, te carga correctamente los datos
-
 app.get("/hotels", function (req, res) {
   pool
     .query("SELECT * FROM hotels")
@@ -27,6 +27,24 @@ app.get("/hotels", function (req, res) {
     .catch((e) => console.error(e));
 });
 
+app.listen(3000, function () {
+  console.log("Server is listening on port 3000. Ready to accept requests!");
+});
+
+-- Realizamos prueba con:
+http://localhost:3000/hotels
+
+-- En la base de datos se ejecuta:
+INSERT INTO hotels (name, rooms, postcode) VALUES ('New Hotel', 5, 'ABC001');
+
+-- Ejecutamos en la consola lo siguiente:
+npm install --save body-parser
+
+-- Se incluye en el server.js:
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
+-- Se añade en server.js lo siguiente, para crear un nuevo hotel:
 app.post("/hotels", function (req, res) {
   const newHotelName = req.body.name;
   const newHotelRooms = req.body.rooms;
@@ -55,3 +73,8 @@ app.post("/hotels", function (req, res) {
       }
     });
 });
+
+-- Exercise 1:
+
+
+
