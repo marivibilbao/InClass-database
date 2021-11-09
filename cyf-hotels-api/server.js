@@ -16,6 +16,7 @@ const pool = new Pool({
 
 // En donde dice password si se coloca, te carga correctamente los datos
 
+// GET - Hotels
 app.get("/hotels", function (req, res) {
   pool
     .query("SELECT * FROM hotels")
@@ -23,6 +24,7 @@ app.get("/hotels", function (req, res) {
     .catch((e) => console.error(e));
 });
 
+//POST - Hotels
 app.post("/hotels", function (req, res) {
   const newHotelName = req.body.name;
   const newHotelRooms = req.body.rooms;
@@ -52,13 +54,31 @@ app.post("/hotels", function (req, res) {
     });
 });
 
-
+// GET - Customers
 app.get("/customers", function (req, res) {
     pool
       .query("SELECT * FROM customers")
       .then((result) => res.json(result.rows))
       .catch((e) => console.error(e));
 });
+
+// POST - Customers
+// app.post("/customers", function (req, res) {
+//     const newCustomerName = req.body.name;
+//     const newCustomerEmail = req.body.email;
+//     const newCustomerAddress = req.body.address;
+//     const newCustomerCity = req.body.city;
+//     const newCustomerPostcode = req.body.postcode;
+//     const newCustomerCountry = req.body.country;
+  
+//     const query =
+//     "INSERT INTO customers (name, email, address, city, postcode, country) VALUES ($1, $2, $3, $4, $5, $6)";
+  
+//     pool
+//       .query(query, [newCustomerName, newCustomerEmail, newCustomerAddress, newCustomerCity, newCustomerPostcode, newCustomerCountry])
+//       .then(() => res.send("Customer created!"))
+//       .catch((e) => console.error(e));
+// });
 
 app.post("/customers", function (req, res) {
     const newCustomerName = req.body.name;
@@ -67,15 +87,25 @@ app.post("/customers", function (req, res) {
     const newCustomerCity = req.body.city;
     const newCustomerPostcode = req.body.postcode;
     const newCustomerCountry = req.body.country;
-  
-    const query =
-    "INSERT INTO customers (name, email, address, city, postcode, country) VALUES ($1, $2, $3, $4, $5, $6)";
-  
-    pool
-      .query(query, [newCustomerName, newCustomerEmail, newCustomerAddress, newCustomerCity, newCustomerPostcode, newCustomerCountry])
-      .then(() => res.send("Customer created!"))
-      .catch((e) => console.error(e));
+
+pool
+    .query("SELECT * FROM customers WHERE name=$1", [newCustomerName])
+    .then((result) => {
+      if (result.rows.length > 0) {
+        return res
+          .status(400)
+          .send("A customers with the same name already exists!");
+      } else {
+        const query =
+        "INSERT INTO customers (name, email, address, city, postcode, country) VALUES ($1, $2, $3, $4, $5, $6)";
+        pool
+          .query(query, [newCustomerName, newCustomerEmail, newCustomerAddress, newCustomerCity, newCustomerPostcode, newCustomerCountry])
+          .then(() => res.send("Customer created!"))
+          .catch((e) => console.error(e));
+      }
+    });
 });
+
 
 app.listen(3000, function () {
     console.log("Server is listening on port 3000. Ready to accept requests!");
