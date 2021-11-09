@@ -95,6 +95,9 @@ http://localhost:3000/customers
 }
 
 -- Exercise 2:
--- En el archivo server.js se añade código para realizar la búsqueda por ID y se adjunta imagen
+-- En el archivo server.js se añade código:
+-- 1.- Realizar la búsqueda por ID Hotels y se adjunta imagen.
+-- 2.- Customers ordenar por nombres.
+-- 3.- Realizar la búsqueda por ID Customers y se adjunta imagen.
 
 

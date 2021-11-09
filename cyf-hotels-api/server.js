@@ -156,6 +156,15 @@ app.get("/customers", function (req, res) {
       .catch((e) => console.error(e));
 });
 
+// GET - Customers ---->> Filtrar sólo por un ID específico
+app.get("/customers/:customerId", function (req, res) {
+    const customerId = req.params.customerId;
+  
+    pool
+      .query("SELECT * FROM customers WHERE id=$1", [customerId])
+      .then((result) => res.json(result.rows))
+      .catch((e) => console.error(e));
+});
 
 
 app.listen(3000, function () {
