@@ -177,7 +177,7 @@ app.get("/customers/:customerId", function (req, res) {
 app.get("/bookings/:customerId", function (req, res) {
   const customerId = req.params.customerId;
   pool
-    .query("SELECT bookings.checkin_date, bookings.nights, hotels.name, hotels.postcode FROM bookings JOIN customers ON bookings.customer_id=$1 JOIN hotels ON bookings.hotel_id=hotels.id", [customerId])
+    .query("SELECT bookings.checkin_date,bookings.nights,hotels.name,hotels.postcode FROM bookings JOIN hotels ON bookings.hotel_id=hotels.id ADN bookings.customer_id=$1;", [customerId])
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
 });
