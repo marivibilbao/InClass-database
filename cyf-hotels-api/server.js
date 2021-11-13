@@ -10,12 +10,13 @@ const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "cyf_hotels",
-  password: "",
+  password: "123456",
   port: 5432,
 });
 
 // En donde dice password si se coloca, te carga correctamente los datos
 
+//--------------------------------------------------------------------------------
 // GET - Hotels
 // app.get("/hotels", function (req, res) {
 //   pool
@@ -23,6 +24,7 @@ const pool = new Pool({
 //     .then((result) => res.json(result.rows))
 //     .catch((e) => console.error(e));
 // });
+//--------------------------------------------------------------------------------
 
 // Exercise 1:
 //POST - Hotels
@@ -55,6 +57,7 @@ app.post("/hotels", function (req, res) {
     });
 });
 
+//--------------------------------------------------------------------------------
 // GET - Customers
 // app.get("/customers", function (req, res) {
 //     pool
@@ -62,6 +65,7 @@ app.post("/hotels", function (req, res) {
 //       .then((result) => res.json(result.rows))
 //       .catch((e) => console.error(e));
 // });
+//--------------------------------------------------------------------------------
 
 // POST - Customers
 // app.post("/customers", function (req, res) {
@@ -80,6 +84,7 @@ app.post("/hotels", function (req, res) {
 //       .then(() => res.send("Customer created!"))
 //       .catch((e) => console.error(e));
 // });
+//--------------------------------------------------------------------------------
 
 app.post("/customers", function (req, res) {
     const newCustomerName = req.body.name;
@@ -107,6 +112,7 @@ pool
     });
 });
 
+//--------------------------------------------------------------------------------
 // GET - Hotels --->> Ordenados por orden
 // app.get("/hotels", function (req, res) {
 //     pool
@@ -114,6 +120,7 @@ pool
 //       .then((result) => res.json(result.rows))
 //       .catch((e) => console.error(e));
 // });
+//--------------------------------------------------------------------------------
 
 // GET - Hotels ---->> Filtrar el hotel con una palabra clave
 app.get("/hotels", function (req, res) {
@@ -165,6 +172,36 @@ app.get("/customers/:customerId", function (req, res) {
       .then((result) => res.json(result.rows))
       .catch((e) => console.error(e));
 });
+
+// ------------------- REVISAR
+// GET - Customers ----->> customerId/bookings
+app.get("/customers/:customerId/bookings", function (req, res){
+    const customerId = req.params.customerId;
+    const bookings = req.params.bookings;
+
+    pool
+    .query("SELECT * FROM customers WHERE id=$1", [customerId, bookings])
+    .then((result) => res.json(result.rows))
+    .catch((e) => console.error(e));    
+});
+
+// ------------------- REVISAR
+// Exercise 3:
+// UPDATE / PATCH
+app.patch("/customers/:customerId", function (req, res) {
+  const customerId = req.params.customerId;
+  const newEmail = req.body.email;
+
+  pool
+    .query("UPDATE customers SET email=$1 WHERE id=$2", [newEmail, customerId])
+    .then(() => res.send(`Customer ${customerId} updated!`))
+    .catch((e) => console.error(e));
+});
+
+
+
+
+
 
 
 app.listen(3000, function () {
