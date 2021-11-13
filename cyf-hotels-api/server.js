@@ -173,6 +173,15 @@ app.get("/customers/:customerId", function (req, res) {
       .catch((e) => console.error(e));
 });
 
+// GET - /bookings/:customerId 
+app.get("/bookings/:customerId", function (req, res) {
+  const customerId = req.params.customerId;
+  pool
+    .query("SELECT bookings.checkin_date, bookings.nights, hotels.name, hotels.postcode FROM bookings JOIN customers ON bookings.customer_id=$1 JOIN hotels ON bookings.hotel_id=hotels.id", [customerId])
+    .then((result) => res.json(result.rows))
+    .catch((e) => console.error(e));
+});
+
 // Exercise 3:
 // UPDATE / PATCH
 app.patch('/customers/:customerId', function (req, res) {
